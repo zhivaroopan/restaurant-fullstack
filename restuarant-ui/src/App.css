@@ -1,0 +1,87 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* app.css */
+.header {
+  background-color: #ff5722;
+  color: #fff;
+  padding: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reservation-form {
+  margin-top: 16px;
+}
+
+.reservation-button {
+  background-color: #4caf50; /* Change to your desired color */
+  color: #000;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 16px;
+  text-align: center;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
+
+
+
