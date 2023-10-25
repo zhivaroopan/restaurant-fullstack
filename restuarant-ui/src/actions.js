@@ -5,7 +5,11 @@ const getUsers = async () => {
     return res.data
 }
 
-const getBookings = async () => {
+const getBookings = async (params) => {
+    if (params) {
+        const res = await apiService.get(`api/bookings${params}`, {})
+        return res.data
+    }
     const res = await apiService.get('api/bookings', {})
     return res.data
 }
@@ -32,7 +36,8 @@ const createBooking = async (params) => {
     const param = {
         people: params.people,
         name: params.username,
-        time: params.time
+        time: params.time,
+        price: params.price
     }
     const res = await apiService.post('api/bookings', param)
     return res

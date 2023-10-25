@@ -5,10 +5,19 @@ import Swal from 'sweetalert2';
 import apiActions from '../../actions';
 import { useUser } from '../context/userContext';
 
+const priceOfTables = {
+  2: 100,
+  4: 150,
+  6: 200,
+  8: 250,
+  10: 300,
+  25: 350,
+}
+
 function ReservationForm() {
   const { userState } = useUser();
   const [time, setTime] = useState('');
-  const [people, setPeople] = useState('');
+  const [people, setPeople] = useState(0);
 
   const handleTimeChange = (event) => {
     setTime(event.target.value);
@@ -20,15 +29,15 @@ function ReservationForm() {
 
   const handleReservation = () => {
     apiActions.createBooking({
-      time, people: Number(people), username: userState.username || 'system'
+      time, people, username: userState.username || 'system', price :priceOfTables[people]
     })
     .then(res => {
       if (res.status === 200) {
         Swal.fire({
           icon: 'success',
-          title: 'Your table has been booked',
+          title: `Your table has been booked for $${priceOfTables[people]}`,
           showConfirmButton: false,
-          timer: 1500
+          timer: 2500
         })
         setPeople('')
         setTime('')
@@ -76,18 +85,19 @@ function ReservationForm() {
           fullWidth
           select
           value={people}
+          type='number'
           onChange={handlePeopleChange}
           style={{ marginBottom: '16px' }}
         >
-          <MenuItem value="">-</MenuItem>
-          <MenuItem value="2">2</MenuItem>
-          <MenuItem value="4">4</MenuItem>
-          <MenuItem value="6">6</MenuItem>
-          <MenuItem value="8">8</MenuItem>
-          <MenuItem value="10">10</MenuItem>
-          <MenuItem value="25">Party (25)</MenuItem>
+          <MenuItem value={0}>-</MenuItem>
+          <MenuItem value={2}>2</MenuItem>
+          <MenuItem value={4}>4</MenuItem>
+          <MenuItem value={6}>6</MenuItem>
+          <MenuItem value={8}>8</MenuItem>
+          <MenuItem value={10}>10</MenuItem>
+          <MenuItem value={25}>Party (25)</MenuItem>
         </TextField>
-        <Button disabled= {time === '' || people === ''}variant="contained" color="primary" onClick={handleReservation}>
+        <Button disabled= {time === '' || people === 0}variant="contained" color="primary" onClick={handleReservation}>
           Reserve
         </Button>
       </form>

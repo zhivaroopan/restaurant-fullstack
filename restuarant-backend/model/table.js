@@ -14,6 +14,10 @@ const tableSchema = new mongoose.Schema({
   dateOfBooking: {
     type: Date,
     default: new Date()
+  },
+  price: {
+    type: Number,
+    required: true
   }
 });
 

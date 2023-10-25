@@ -6,6 +6,9 @@ import apiActions from '../../actions';
 const AdminTable = () => {
   const [reservations, setReservations] = useState([]);
 
+  const resendReservations = (res) => {
+    setReservations(res)
+  }
   useEffect(() => {
     // Make an API call and store the response in the 'reservations' state
     apiActions.getBookings()
@@ -19,7 +22,7 @@ const AdminTable = () => {
   }, []);
     return(
         <div>
-            <AdminPanel reservations={reservations}/>
+            <AdminPanel reservations={reservations} fetchAgain={resendReservations}/>
         </div>
     )
 }

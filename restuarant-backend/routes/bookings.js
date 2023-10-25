@@ -8,12 +8,29 @@ const User = require('../model/user');
 // Get all bookings
 router.get('/', async (req, res) => {
   try {
+    const { fromDate, toDate, people } = req.query
+    let query = {}
+    if (fromDate && toDate) {
+      query.dateOfBooking = {
+        $gte: new Date(fromDate),
+        $lte: new Date(toDate),
+      };
+    }
+    if (people) {
+      query.peopleCount = parseFloat(people);
+    }
     const bookings = await Booking.aggregate([
       {
-        $match: {},
+        $match: query,
       },
     ]).exec();
-    res.status(200).json(bookings);
+    let price = 0
+    if  (bookings.length > 0) {
+      bookings.forEach(booking => {
+        price += booking.price
+      })
+    }
+    res.status(200).json({ data: bookings, price })
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -21,7 +38,7 @@ router.get('/', async (req, res) => {
 
 // Route to check table availability for a specific time frame
 router.post('/', async (req, res) => {
-    const { time, people, name } = req.body; // Assuming you pass these as query parameters
+    const { time, people, name, price } = req.body; // Assuming you pass these as query parameters
   
     try {
       const allTablesBooked = await areAllTablesBooked(time, people);
@@ -29,7 +46,8 @@ router.post('/', async (req, res) => {
         const booking = new Booking({
           timeSlot: time,
           peopleCount: people,
-          username: name
+          username: name,
+          price
         })
         await booking.save()
         res.status(200).json({ message: 'Table Booked successfully' });
