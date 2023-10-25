@@ -41,7 +41,6 @@ export default function SignUp() {
       name: data.get('username'),
       password: data.get('password'),
     }).then(res => {
-        console.log(res, '--')
         if (res === 201) {
             navigate('/home');
         }
