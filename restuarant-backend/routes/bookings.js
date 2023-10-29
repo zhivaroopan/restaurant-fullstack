@@ -4,6 +4,7 @@ const router = express.Router();
 const Booking = require('../model/table');
 const areAllTablesBooked = require('../services/bookingLogic');
 const User = require('../model/user');
+const { insertData } = require('./createBulk')
 
 // Get all bookings
 router.get('/', async (req, res) => {
@@ -38,7 +39,7 @@ router.get('/', async (req, res) => {
 
 // Route to check table availability for a specific time frame
 router.post('/', async (req, res) => {
-    const { time, people, name, price } = req.body; // Assuming you pass these as query parameters
+    const { time, people, name, price, foodItems } = req.body; // Assuming you pass these as query parameters
   
     try {
       const allTablesBooked = await areAllTablesBooked(time, people);
@@ -47,7 +48,8 @@ router.post('/', async (req, res) => {
           timeSlot: time,
           peopleCount: people,
           username: name,
-          price
+          price,
+          foodItems
         })
         await booking.save()
         res.status(200).json({ message: 'Table Booked successfully' });
@@ -82,5 +84,16 @@ router.delete('/:id', async (req, res) => {
     res.status(404).json({ error: 'Booking not found' });
   }
 });
+
+router.get('/load', async (req, res) => {
+  try {
+    const some = await insertData()
+    console.dir(some)
+    res.sendStatus(201)
+  } catch (err) {
+    console.error(err)
+    res.sendStatus(500)
+  }
+})
 
 module.exports = router;
